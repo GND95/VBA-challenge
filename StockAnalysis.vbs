@@ -20,7 +20,12 @@ Sub StockAnalysis()
             tickerSymbol = Cells(i, 1).Value
             closingValue = Cells(i, 6).Value ' set the closing value of the stock price because in the else block this will be the last instance of the prior ticker symbol appearing
             yearlyChangeValue = closingValue - openingValue ' calculate the difference in stock price between the start of the year and now
-            yearlyChangePercent = (closingValue - openingValue) / openingValue ' using the percent change math formula         
+            yearlyChangePercent = (closingValue - openingValue) / openingValue ' using the percent change math formula
+            If yearlyChangeValue < 0 Then ' if it's less than 0 then it's a negative number and should be red
+                Cells(startingRow, 10).Interior.ColorIndex = 3
+            ElseIf yearlyChangeValue > 0 Then ' if it's greater than 0 then it's a positive number and should be green; 0.00 values will not be colored as they are neither positive nor negative numbers
+                Cells(startingRow, 10).Interior.ColorIndex = 10
+            End If
             Cells(startingRow, 9).Value = tickerSymbol ' if cells are different then i am going to want to write the ticker symbol out to the "I" column and then increment the row counter variable
             Cells(startingRow, 10).Value = Round(yearlyChangeValue, 2) ' round number down to two decimal places and put value in column j
             Cells(startingRow, 11).Value = yearlyChangePercent
@@ -30,3 +35,6 @@ Sub StockAnalysis()
         End If
     Next i
 End Sub
+
+
+
