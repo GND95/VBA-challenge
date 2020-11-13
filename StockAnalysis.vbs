@@ -6,7 +6,9 @@ Sub StockAnalysis()
     Dim tickerSymbol As String
     Dim openingValue, closingValue As Double
     Dim isOpeningValue As Boolean
+    Dim startingRow As Integer
     isOpeningValue = True
+    startingRow = 2
     
     For i = 2 To Cells(Rows.Count, 1).End(xlUp).Row
         If Cells(i + 1, 1).Value = Cells(i, 1).Value Then
@@ -18,10 +20,12 @@ Sub StockAnalysis()
         ElseIf Cells(i + 1, 1).Value <> Cells(i, 1).Value Then
             isOpeningValue = True
             tickerSymbol = Cells(i, 1).Value
-            MsgBox (tickerSymbol) 'FOR TESTING
-            ' if cells are different then i am going to want to write the ticker symbol out to the "I" column
+            Cells(startingRow, 9).Value = tickerSymbol
+            startingRow = startingRow + 1
+            ' if cells are different then i am going to want to write the ticker symbol out to the "I" column and then increment the row counter variable
             ' and calculate the difference between the start of the year and now, since in the else block this is the last instance of the prior ticker symbol appearing
         End If
     Next i
 End Sub
+
 
