@@ -4,13 +4,13 @@ Sub StockAnalysis()
     Range("K1").Value = "Percent Change"
     Range("L1").Value = "Total Stock Volume"
     Dim tickerSymbol As String
-    Dim openingValue, closingValue, yearlyChangeValue, yearlyChangePercent As Double
+    Dim openingValue, closingValue, yearlyChangeValue, yearlyChangePercent, maxPercentChange, minPercentChange, maxVolume As Double
     Dim isOpeningValue As Boolean
     Dim startingRow As Integer
     isOpeningValue = True
     Dim totalVolume As Double
-    startingRow = 2    
-
+    startingRow = 2
+    
     For i = 2 To Cells(Rows.Count, 1).End(xlUp).Row
         If Cells(i + 1, 1).Value = Cells(i, 1).Value Then
             If isOpeningValue = True Then ' store the value of the opening price BUT only do it once so it's not overwritten by future prices that are not the first opening price
@@ -39,4 +39,13 @@ Sub StockAnalysis()
             totalVolume = 0 ' reset total volume variable back to zero so the next stock volume can be tracked
         End If
     Next i
+    maxVolume = WorksheetFunction.Max(Range("L2:L" + CStr(Cells(Rows.Count, 12).End(xlUp).Row))) 'getting the largest stock volume value from the column of stock volumes
+    Range("N2").Value = maxVolume
+    For i = 2 To Cells(Rows.Count, 12).End(xlUp).Row ' loop through the volume column until we find a value that matches the max volume
+        If Cells(i, 12) = maxVolume Then
+            MsgBox ("Largest stock volume is: " + Cells(i, 9)) 'remove later, testing
+            Exit For ' break out of for loop if a volume value match is found
+        End If
+    Next i
 End Sub
+
