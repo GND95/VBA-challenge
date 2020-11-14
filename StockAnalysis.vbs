@@ -9,11 +9,10 @@ Sub StockAnalysis()
     Range("P1").Value = "Ticker"
     Range("Q1").Value = "Value"
     Dim tickerSymbol As String
-    Dim openingValue, closingValue, yearlyChangeValue, yearlyChangePercent, maxPercentChange, minPercentChange, maxVolume As Double
+    Dim openingValue, closingValue, yearlyChangeValue, yearlyChangePercent, maxPercentChange, minPercentChange, maxVolume, totalVolume As Double
     Dim isOpeningValue As Boolean
     Dim startingRow As Integer
     isOpeningValue = True
-    Dim totalVolume As Double
     startingRow = 2
     
     For i = 2 To Cells(Rows.Count, 1).End(xlUp).Row
@@ -28,7 +27,9 @@ Sub StockAnalysis()
             closingValue = Cells(i, 6).Value ' set the closing value of the stock price because in the else block this will be the last instance of the prior ticker symbol appearing
             totalVolume = totalVolume + Cells(i, 7).Value ' set the stock volume equal to itself plus the volume of the current (final) row of volume data for the ticker
             yearlyChangeValue = closingValue - openingValue ' calculate the difference in stock price between the start of the year and now
-            yearlyChangePercent = (closingValue - openingValue) / openingValue ' using the percent change math formula
+            If openingValue <> 0 Then ' account for the cases when the opening value of a stock is 0 by skipping this stock as you cannot divide by zero to calculate percent change
+                yearlyChangePercent = (closingValue - openingValue) / openingValue ' using the percent change math formula
+            End If
             If yearlyChangeValue < 0 Then ' if it's less than 0 then it's a negative number and should be red
                 Cells(startingRow, 10).Interior.ColorIndex = 3
             ElseIf yearlyChangeValue > 0 Then ' if it's greater than 0 then it's a positive number and should be green; 0.00 values will not be colored as they are neither positive nor negative numbers
