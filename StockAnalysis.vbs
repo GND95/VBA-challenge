@@ -45,11 +45,29 @@ Sub StockAnalysis()
         End If
     Next i
     maxVolume = WorksheetFunction.Max(Range("L2:L" + CStr(Cells(Rows.Count, 12).End(xlUp).Row))) 'getting the largest stock volume value from the column of stock volumes
-    Range("Q4").Value = maxVolume
+    minPercentChange = WorksheetFunction.Min(Range("K2:K" + CStr(Cells(Rows.Count, 11).End(xlUp).Row))) 'getting the smallest stock percent change value from the column of stock percent change
+    maxPercentChange = WorksheetFunction.Max(Range("K2:K" + CStr(Cells(Rows.Count, 11).End(xlUp).Row))) 'getting the largest stock percent change value from the column of stock percent change
     For i = 2 To Cells(Rows.Count, 12).End(xlUp).Row ' loop through the volume column until we find a value that matches the max volume
         If Cells(i, 12) = maxVolume Then
             Range("P4").Value = Cells(i, 9) ' if the volume is a match go to the Ticker column of that same row to retrieve which stock ticker has the highest volume
+            Range("Q4").Value = maxVolume ' if the volume is a match then put the volume value into the Value column
             Exit For ' break out of for loop if a volume value match is found
+        End If
+    Next i
+    For i = 2 To Cells(Rows.Count, 11).End(xlUp).Row ' loop through the percent change column until we find a value that matches the min percent change
+        If Cells(i, 11) = minPercentChange Then
+            Range("P3").Value = Cells(i, 9) ' if the min percent change is a match go to the Ticker column of that same row to retrieve which stock ticker has the lowest percent change
+            Range("Q3").Value = minPercentChange ' if the percent change is a match then put the percent change value into the Value column
+            Range("Q3").NumberFormat = "0.00%" ' format value to be a percent with two decimal places
+            Exit For ' break out of for loop if a percent change value match is found
+        End If
+    Next i
+    For i = 2 To Cells(Rows.Count, 11).End(xlUp).Row ' loop through the percent change column until we find a value that matches the max percent change
+        If Cells(i, 11) = maxPercentChange Then
+            Range("P2").Value = Cells(i, 9) ' if the max percent change is a match go to the Ticker column of that same row to retrieve which stock ticker has the highest percent change
+            Range("Q2").Value = maxPercentChange ' if the percent change is a match then put the percent change value into the Value column
+            Range("Q2").NumberFormat = "0.00%" ' format value to be a percent with two decimal places
+            Exit For ' break out of for loop if a percent change value match is found
         End If
     Next i
 End Sub
