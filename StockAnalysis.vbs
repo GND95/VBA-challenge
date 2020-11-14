@@ -3,6 +3,11 @@ Sub StockAnalysis()
     Range("J1").Value = "Yearly Change"
     Range("K1").Value = "Percent Change"
     Range("L1").Value = "Total Stock Volume"
+    Range("O2").Value = "Greatest % Increase"
+    Range("O3").Value = "Greatest % Decrease"
+    Range("O4").Value = "Greatest Total Volume"
+    Range("P1").Value = "Ticker"
+    Range("Q1").Value = "Value"
     Dim tickerSymbol As String
     Dim openingValue, closingValue, yearlyChangeValue, yearlyChangePercent, maxPercentChange, minPercentChange, maxVolume As Double
     Dim isOpeningValue As Boolean
@@ -40,12 +45,11 @@ Sub StockAnalysis()
         End If
     Next i
     maxVolume = WorksheetFunction.Max(Range("L2:L" + CStr(Cells(Rows.Count, 12).End(xlUp).Row))) 'getting the largest stock volume value from the column of stock volumes
-    Range("N2").Value = maxVolume
+    Range("Q4").Value = maxVolume
     For i = 2 To Cells(Rows.Count, 12).End(xlUp).Row ' loop through the volume column until we find a value that matches the max volume
         If Cells(i, 12) = maxVolume Then
-            MsgBox ("Largest stock volume is: " + Cells(i, 9)) 'remove later, testing
+            Range("P4").Value = Cells(i, 9) ' if the volume is a match go to the Ticker column of that same row to retrieve which stock ticker has the highest volume
             Exit For ' break out of for loop if a volume value match is found
         End If
     Next i
 End Sub
-
